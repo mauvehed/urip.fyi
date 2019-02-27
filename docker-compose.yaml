@@ -1,0 +1,9 @@
+version: '3'
+services:
+  corgibot:
+    build:
+      context: .
+    image: "zate75/urip.fyi"
+    container_name: urip.fyi
+    command: /urip.fyi
+    restart: always
