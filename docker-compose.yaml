@@ -1,6 +1,6 @@
 version: '3'
 services:
-  corgibot:
+  urip.fyi:
     build:
       context: .
     image: "zate75/urip.fyi"
@@ -10,7 +10,7 @@ services:
       - internal
       - proxy
     labels:
-      - traefik.backend=files
+      - traefik.backend=urip.fyi
       - traefik.frontend.rule=Host:urip.fyi
       - traefik.docker.network=proxy
 
