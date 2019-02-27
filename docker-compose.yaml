@@ -1,16 +1,16 @@
 version: '3'
 services:
-  urip.fyi:
+  urip:
     build:
       context: .
-    image: "zate75/urip.fyi"
-    container_name: urip.fyi
+    image: "zate75/urip"
+    container_name: urip
     restart: always
     networks:
       - internal
       - proxy
     labels:
-      - traefik.backend=urip.fyi
+      - traefik.backend=urip
       - traefik.frontend.rule=Host:urip.fyi
       - traefik.docker.network=proxy
 
