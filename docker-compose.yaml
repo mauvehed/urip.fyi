@@ -5,5 +5,18 @@ services:
       context: .
     image: "zate75/urip.fyi"
     container_name: urip.fyi
-    command: /urip.fyi
     restart: always
+    networks:
+      - internal
+      - proxy
+    labels:
+      - traefik.backend=files
+      - traefik.frontend.rule=Host:urip.fyi
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
