@@ -26,6 +26,8 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 COPY --from=builder /app /app
 
+COPY --from=builder /src/corgi.png /corgi.png
+
 EXPOSE 3000
 
 # Perform any further action as an unprivileged user.
