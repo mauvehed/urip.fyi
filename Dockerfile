@@ -20,13 +20,21 @@ RUN CGO_ENABLED=0 go build \
 
 FROM scratch AS final
 
+WORKDIR /
+
 COPY --from=builder /user/group /user/passwd /etc/
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 COPY --from=builder /app /app
 
-COPY --from=builder /src/corgi.png /corgi.png
+COPY --from=builder /src/*.png /
+
+COPY --from=builder /src/browserconfig.xml .
+
+COPY --from=builder /src/favicon.ico .
+
+COPY --from=builder /src/manifest.json .
 
 EXPOSE 3000
 

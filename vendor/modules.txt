@@ -1,5 +1,5 @@
-# github.com/davecgh/go-spew v1.1.0
-github.com/davecgh/go-spew/spew
+# github.com/asaskevich/govalidator v0.0.0-20180720115003-f9ffefc3facf
+github.com/asaskevich/govalidator
 # github.com/dgrijalva/jwt-go v3.2.0+incompatible
 github.com/dgrijalva/jwt-go
 # github.com/labstack/echo v3.3.10+incompatible

@@ -1,7 +1,7 @@
 module github.com/Zate/urip.fyi
 
 require (
-	github.com/davecgh/go-spew v1.1.0
+	github.com/asaskevich/govalidator v0.0.0-20180720115003-f9ffefc3facf
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.2.8 // indirect
