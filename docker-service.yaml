@@ -1,0 +1,65 @@
+version: '3.3'
+services:
+  urip:
+    image: "zate75/urip:latest"
+    container_name: urip
+    restart: on-failure
+    entrypoint: ["/app"]
+    networks:
+      - internal
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      
+
+  wallarm:
+    image: "wallarm/node"
+    container_name: wallarm
+    restart: on-failure
+    networks:
+      - internal
+      - traefik-public
+      - default
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    labels:
+        - traefik.backend=urip
+        - traefik.frontend.rule=Host:urip.fyi
+        - traefik.docker.network=traefik-public
+        - traefik.enable=true
+        - traefik.port=80
+        - traefik.tags=traefik-public
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+    environment: 
+      - DEPLOY_USER="/run/secrets/wallarm_deploy_user"
+      - DEPLOY_PASSWORD="/run/secrets/wallarm_deploy_password"
+      - NGINX_BACKEND="http://urip:3000"
+      - WALLARM_MODE="monitoring"
+      - DEPLOY_FORCE=true
+    
+      
+
+networks:
+  traefik-public:
+    external: true
+  internal:
+    external: false
+  default:
+    driver: overlay
+
+secrets:
+  wallarm_deploy_user:
+    external: true
+  wallarm_deploy_secret:
+    external: true
+
+    
+  
+
+

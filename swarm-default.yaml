@@ -1,0 +1,32 @@
+version: '3'
+services:
+  urip:
+    image: "zate75/urip:latest"
+    container_name: urip
+    restart: on-failure
+    entrypoint: ["/app"]
+    networks:
+      - internal
+      - traefik-public
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.backend=urip
+        - traefik.frontend.rule=Host:urip.fyi
+        - traefik.docker.network=traefik-public
+        - traefik.enable=true
+        - traefik.port=3000
+        - traefik.tags=traefik-public
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+
+networks:
+  traefik-public:
+    external: true
+  internal:
+    external: false
+
