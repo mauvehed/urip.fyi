@@ -4,11 +4,14 @@ import (
 	"log"
 	"net/http"
 
+	valid "github.com/asaskevich/govalidator"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-
-	valid "github.com/asaskevich/govalidator"
 )
+
+type urip struct {
+	IP string `json:"ip"`
+}
 
 func antiChristina(realIP string) string {
 	if valid.IsIPv4(realIP) {
@@ -96,8 +99,10 @@ func rawip(c echo.Context) error {
 }
 
 func jsonip(c echo.Context) error {
-
-	return c.JSONPretty(http.StatusOK, antiChristina(c.RealIP()), "  ")
+	urip := &urip{
+		IP: antiChristina(c.RealIP()),
+	}
+	return c.JSONPretty(http.StatusOK, urip, "  ")
 }
 
 func main() {
