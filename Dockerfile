@@ -1,16 +1,26 @@
 
 FROM golang:alpine AS builder
 
+ENV GO111MODULE=on
+
 RUN mkdir /user && \
     echo 'nobody:x:65534:65534:nobody:/:' > /user/passwd && \
     echo 'nobody:x:65534:' > /user/group
 
-RUN apk add --no-cache ca-certificates git
+RUN apk add --no-cache ca-certificates git curl
 
 WORKDIR /src
 
 COPY ./go.mod ./go.sum ./
-RUN go mod download
+RUN go mod download && \
+    mkdir locdata && \
+    curl https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz -o locdata/GeoLite2-City.tar.gz && \
+    go get -v github.com/kevinburke/go-bindata && \
+    ls -al / && \
+    ls -al /src && \
+    env && \
+    find / | grep bindata && \
+    go-bindata --nocompress locdata/
 
 COPY ./ ./
 

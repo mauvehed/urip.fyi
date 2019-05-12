@@ -2,19 +2,100 @@ package main
 
 import (
 	"log"
+	"net"
 	"net/http"
 
 	valid "github.com/asaskevich/govalidator"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	geoip2 "github.com/oschwald/geoip2-golang"
 )
 
+var db *geoip2.Reader
+
+// type City struct {
+// 	City struct {
+// 		GeoNameID uint              `maxminddb:"geoname_id"`
+// 		Names     map[string]string `maxminddb:"names"`
+// 	} `maxminddb:"city"`
+// 	Continent struct {
+// 		Code      string            `maxminddb:"code"`
+// 		GeoNameID uint              `maxminddb:"geoname_id"`
+// 		Names     map[string]string `maxminddb:"names"`
+// 	} `maxminddb:"continent"`
+// 	Country struct {
+// 		GeoNameID         uint              `maxminddb:"geoname_id"`
+// 		IsInEuropeanUnion bool              `maxminddb:"is_in_european_union"`
+// 		IsoCode           string            `maxminddb:"iso_code"`
+// 		Names             map[string]string `maxminddb:"names"`
+// 	} `maxminddb:"country"`
+// 	Location struct {
+// 		AccuracyRadius uint16  `maxminddb:"accuracy_radius"`
+// 		Latitude       float64 `maxminddb:"latitude"`
+// 		Longitude      float64 `maxminddb:"longitude"`
+// 		MetroCode      uint    `maxminddb:"metro_code"`
+// 		TimeZone       string  `maxminddb:"time_zone"`
+// 	} `maxminddb:"location"`
+// 	Postal struct {
+// 		Code string `maxminddb:"code"`
+// 	} `maxminddb:"postal"`
+// 	RegisteredCountry struct {
+// 		GeoNameID         uint              `maxminddb:"geoname_id"`
+// 		IsInEuropeanUnion bool              `maxminddb:"is_in_european_union"`
+// 		IsoCode           string            `maxminddb:"iso_code"`
+// 		Names             map[string]string `maxminddb:"names"`
+// 	} `maxminddb:"registered_country"`
+// 	RepresentedCountry struct {
+// 		GeoNameID         uint              `maxminddb:"geoname_id"`
+// 		IsInEuropeanUnion bool              `maxminddb:"is_in_european_union"`
+// 		IsoCode           string            `maxminddb:"iso_code"`
+// 		Names             map[string]string `maxminddb:"names"`
+// 		Type              string            `maxminddb:"type"`
+// 	} `maxminddb:"represented_country"`
+// 	Subdivisions []struct {
+// 		GeoNameID uint              `maxminddb:"geoname_id"`
+// 		IsoCode   string            `maxminddb:"iso_code"`
+// 		Names     map[string]string `maxminddb:"names"`
+// 	} `maxminddb:"subdivisions"`
+// 	Traits struct {
+// 		IsAnonymousProxy    bool `maxminddb:"is_anonymous_proxy"`
+// 		IsSatelliteProvider bool `maxminddb:"is_satellite_provider"`
+// 	} `maxminddb:"traits"`
+// }
+
 type urip struct {
-	IP string `json:"ip"`
+	IP  string  `json:"ip,omitempty"`
+	AR  uint16  `json:"accuracy_radius,omitempty"`
+	Lat float64 `json:"latitude,omitempty"`
+	Lon float64 `json:"longitude,omitempty"`
+	MC  uint    `json:"metro_code,omitempty"`
+	TZ  string  `json:"time_zone,omitempty"`
 }
 
 func antiChristina(realIP string) string {
-	if valid.IsIPv4(realIP) {
+	c := "192.168.0.0/16"
+	b := "172.16.0.0/12"
+	a := "10.0.0.0/8"
+
+	ip := net.ParseIP(realIP)
+
+	_, neta, err := net.ParseCIDR(a)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	_, netb, err := net.ParseCIDR(b)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	_, netc, err := net.ParseCIDR(c)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	if valid.IsIPv4(realIP) && !(neta.Contains(ip) || netb.Contains(ip) || netc.Contains(ip)) {
+
 		return realIP
 	}
 	return "Bazinga!"
@@ -99,15 +180,30 @@ func rawip(c echo.Context) error {
 }
 
 func jsonip(c echo.Context) error {
+	ip := net.ParseIP(antiChristina(c.RealIP()))
+	record, err := db.City(ip)
+	if err != nil {
+		log.Fatal(err)
+	}
 	urip := &urip{
-		IP: antiChristina(c.RealIP()),
+		IP:  antiChristina(c.RealIP()),
+		AR:  record.Location.AccuracyRadius,
+		Lat: record.Location.Latitude,
+		Lon: record.Location.Longitude,
+		MC:  record.Location.MetroCode,
+		TZ:  record.Location.TimeZone,
 	}
 	return c.JSONPretty(http.StatusOK, urip, "  ")
 }
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lmicroseconds | log.Lshortfile)
-
+	data, err := Asset("locdata/GeoLite2-City.tar.gz")
+	if err != nil {
+		log.Fatalf("Error : %v", err)
+	}
+	db, _ = geoip2.FromBytes(data)
+	defer db.Close()
 	e := echo.New()
 	e.File("/favicon.ico", "favicon.ico")
 	e.File("/corgi.png", "corgi.png")
