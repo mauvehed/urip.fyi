@@ -19,7 +19,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role != manager
+          - node.role == manager
       labels:
         - traefik.backend=dev.urip.fyi
         - traefik.frontend.rule=Host:dev.urip.fyi
