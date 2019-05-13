@@ -198,11 +198,11 @@ func jsonip(c echo.Context) error {
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lmicroseconds | log.Lshortfile)
-	data, err := Asset("locdata/GeoLite2-City.tar.gz")
+
+	db, err := geoip2.Open("GeoLite2-City.mmdb")
 	if err != nil {
 		log.Fatalf("Error : %v", err)
 	}
-	db, _ = geoip2.FromBytes(data)
 	defer db.Close()
 	e := echo.New()
 	e.File("/favicon.ico", "favicon.ico")
