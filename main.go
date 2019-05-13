@@ -199,7 +199,7 @@ func jsonip(c echo.Context) error {
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lmicroseconds | log.Lshortfile)
 
-	db, err := geoip2.Open("GeoLite2-City.mmdb")
+	db, err := geoip2.Open("locdata/GeoLite2-City.mmdb")
 	if err != nil {
 		log.Fatalf("Error : %v", err)
 	}
