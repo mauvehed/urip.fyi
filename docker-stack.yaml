@@ -7,9 +7,9 @@ networks:
     external: false
     
 services:
-  urip:
+  dev.urip.fyi:
     image: zate75/urip:dev
-    container_name: urip-dev
+    container_name: dev.urip.fyi
     restart: on-failure
     entrypoint: ["/app"]
     
@@ -21,7 +21,7 @@ services:
         constraints:
           - node.role != manager
       labels:
-        - traefik.backend=urip
+        - traefik.backend=dev.urip.fyi
         - traefik.frontend.rule=Host:dev.urip.fyi
         - traefik.docker.network=traefik-public
         - traefik.enable=true
