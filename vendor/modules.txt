@@ -1,10 +1,14 @@
 # github.com/asaskevich/govalidator v0.0.0-20180720115003-f9ffefc3facf
 github.com/asaskevich/govalidator
+# github.com/davecgh/go-spew v1.1.0
+github.com/davecgh/go-spew/spew
 # github.com/dgrijalva/jwt-go v3.2.0+incompatible
 github.com/dgrijalva/jwt-go
 # github.com/labstack/echo v3.3.10+incompatible
 github.com/labstack/echo
-github.com/labstack/echo/middleware
+# github.com/labstack/echo/v4 v4.1.5
+github.com/labstack/echo/v4
+github.com/labstack/echo/v4/middleware
 # github.com/labstack/gommon v0.2.8
 github.com/labstack/gommon/color
 github.com/labstack/gommon/log
@@ -12,14 +16,30 @@ github.com/labstack/gommon/bytes
 github.com/labstack/gommon/random
 # github.com/mattn/go-colorable v0.1.1
 github.com/mattn/go-colorable
-# github.com/mattn/go-isatty v0.0.6
+# github.com/mattn/go-isatty v0.0.7
 github.com/mattn/go-isatty
+# github.com/oschwald/geoip2-golang v1.2.1
+github.com/oschwald/geoip2-golang
+# github.com/oschwald/maxminddb-golang v1.3.0
+github.com/oschwald/maxminddb-golang
+# github.com/pmezard/go-difflib v1.0.0
+github.com/pmezard/go-difflib/difflib
+# github.com/stretchr/testify v1.3.0
+github.com/stretchr/testify/assert
 # github.com/valyala/bytebufferpool v1.0.0
 github.com/valyala/bytebufferpool
-# github.com/valyala/fasttemplate v0.0.0-20170224212429-dcecefd839c4
+# github.com/valyala/fasttemplate v1.0.1
 github.com/valyala/fasttemplate
-# golang.org/x/crypto v0.0.0-20190225124518-7f87c0fbb88b
-golang.org/x/crypto/acme/autocert
+# golang.org/x/crypto v0.0.0-20190426145343-a29dc8fdc734
 golang.org/x/crypto/acme
-# golang.org/x/sys v0.0.0-20190222072716-a9d3bda3a223
+golang.org/x/crypto/acme/autocert
+# golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3
+golang.org/x/net/idna
+# golang.org/x/sys v0.0.0-20190412213103-97732733099d
 golang.org/x/sys/unix
+golang.org/x/sys/windows
+# golang.org/x/text v0.3.0
+golang.org/x/text/secure/bidirule
+golang.org/x/text/unicode/bidi
+golang.org/x/text/unicode/norm
+golang.org/x/text/transform

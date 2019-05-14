@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	valid "github.com/asaskevich/govalidator"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	geoip2 "github.com/oschwald/geoip2-golang"
 )
 
@@ -183,7 +183,7 @@ func jsonip(c echo.Context) error {
 	ip := net.ParseIP(antiChristina(c.RealIP()))
 	record, err := db.City(ip)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Error: %v", err)
 	}
 	urip := &urip{
 		IP:  antiChristina(c.RealIP()),

@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -94,14 +94,14 @@ func Test_ip(t *testing.T) {
 	}
 	tests := []struct {
 		name    string
-		args    args
+		args    *args
 		wantErr bool
 	}{
 		// TODO: Add test cases.
 		{
 			name: "basic http response",
-			args: args{
-				c: &echo.Context{},
+			args: &args{
+				c: echo.Context{},
 			},
 			wantErr: false,
 		},
