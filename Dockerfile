@@ -9,10 +9,11 @@ RUN apk add --no-cache ca-certificates git
 
 WORKDIR /src
 
-COPY ./go.mod ./go.sum ./
-RUN go mod download
+# COPY ./go.mod ./go.sum ./
+# RUN go mod download
 
-COPY ./ ./
+COPY ./*.png ./*.xml ./*.json ./*.go ./*.ico ./
+RUN go mod init github.com/Zate/urip.fyi
 
 RUN CGO_ENABLED=0 go build \
     -installsuffix 'static' \

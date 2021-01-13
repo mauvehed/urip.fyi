@@ -1,5 +1,7 @@
 module github.com/Zate/urip.fyi
 
+go 1.15
+
 require (
 	github.com/asaskevich/govalidator v0.0.0-20180720115003-f9ffefc3facf
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
