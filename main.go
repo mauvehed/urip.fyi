@@ -14,7 +14,7 @@ type urip struct {
 }
 
 func antiChristina(realIP string) string {
-	if valid.IsIPv4(realIP) {
+	if valid.IsIP(realIP) {
 		return realIP
 	}
 	return "Bazinga!"
