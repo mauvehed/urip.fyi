@@ -15,6 +15,7 @@ type urip struct {
 
 func antiChristina(realIP string) string {
 	if valid.IsIP(realIP) {
+
 		return realIP
 	}
 	return "Bazinga!"
@@ -86,7 +87,7 @@ func ip(c echo.Context) error {
 	payload += antiChristina(c.RealIP())
 	payload += `</h2></div>
 
-	</div>
+	</div><a rel="me" href="https://infosec.exchange/@zate"></a>
 </body>
 </html>`
 
@@ -151,4 +152,5 @@ func main() {
 	e.GET("/json", jsonip)
 
 	e.Logger.Fatal(e.Start(":3000"))
+	doJA3()
 }
