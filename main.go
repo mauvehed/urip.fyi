@@ -87,7 +87,8 @@ func ip(c echo.Context) error {
 	payload += antiChristina(c.RealIP())
 	payload += `</h2></div>
 
-	</div><a rel="me" href="https://infosec.exchange/@zate"></a>
+	</div>
+	<a rel="me" href="https://infosec.exchange/@zate"></a>
 </body>
 </html>`
 
