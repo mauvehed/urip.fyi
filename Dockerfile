@@ -14,6 +14,7 @@ WORKDIR /src
 
 COPY ./*.png ./*.xml ./*.json ./*.go ./*.ico ./
 RUN go mod init github.com/Zate/urip.fyi
+RUN go mod tidy
 
 RUN CGO_ENABLED=0 go build \
     -installsuffix 'static' \
